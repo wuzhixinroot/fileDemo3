@@ -1,0 +1,70 @@
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <script src="jquery/jquery-3.4.1.min.js"></script>
+    <script src="static/layer/layer.js"></script>
+    <script src="static/layui/layui.js"></script>
+    <link rel="stylesheet" href="static/layui/css/layui.css">
+
+    <style>
+        body{
+            background-color: #75b9e6;
+        }
+    </style>
+</head>
+<body>
+<center>
+    <div style="margin-top: 150px;width: 400px;">
+        <div style="color: #768399;background-color: #75b9e6;padding-bottom: 5px;" >
+            <h2>文件系统管理平台</h2>
+        </div>
+        <div style="background-color: white;width: 400px; border-radius: 25px;">
+            <div  style="width: 300px">
+                <hr>
+                <!-- <ul id="myTab" class="nav nav-tabs">
+                     <li class="active"><a href="#home" data-toggle="tab">
+                         开发者登录</a></li>
+                     <li><a href="#ios" data-toggle="tab">后台管理登录</a></li>
+
+                 </ul>-->
+            </div>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="home">
+                    <div class="layui-container"  style="width: 300px;margin-top: 30px">
+                        <form action="/login" method="post" class="layui-form">
+                            <div class="layui-form-item" style="width: 300px">
+                                <div class="layui-input-block" style="margin-left: 0">
+                                    <input type="text" name="username" required lay-verify="required" value="wuzhixin"
+                                           placeholder="请输入用户名" autocomplete="off"
+                                           class="layui-input" style="width: 300px">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block" style="margin-left: 0">
+                                    <input type="password" name="password" required lay-verify="required" value="111111"
+                                           placeholder="请输入密码" autocomplete="off"
+                                           class="layui-input" style="width: 300px">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block" style="margin-left: 0;padding-bottom: 8px">
+                                    <button class="layui-btn layui-btn-radius layui-btn-normal" lay-submit lay-filter="formDemo" style="width: 300px;">登录</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</center>
+<script>
+
+</script>
+
+</body>
+</html>

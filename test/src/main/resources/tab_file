@@ -1,0 +1,17 @@
+create table tab_file(
+        id  int not null GENERATED ALWAYS AS IDENTITY,
+        f_type varchar(20) default "",
+        f_name varchar(50) default "",
+        f_createtime varchar(20) default "",
+        f_dir varchar(20) default ""
+)
+
+
+create table tab_file(
+        id  int not null GENERATED ALWAYS AS IDENTITY,
+        f_size varchar(50),
+        f_type varchar(20),
+        f_name varchar(50),
+        f_createtime varchar(20),
+        f_dir varchar(20)
+)

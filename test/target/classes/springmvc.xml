@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	
+	<!-- 配置IOC的注解扫描 @Controller -->
+	<context:component-scan base-package="com.wuzhixin.controller"/>
+	
+	<!-- 配置静态资源的放行 : 交给了服务器中的default-servlet来放行的 -->
+	<mvc:default-servlet-handler/>
+	<!-- 开启SpringMVC注解驱动  -->
+	<mvc:annotation-driven/>
+	
+	<!-- 配置视图解析器 [逻辑视图 →  prefix +逻辑视图名 + suffix]-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/myhtml"/>
+		<property name="suffix" value=".html"/>
+	</bean>
+	
+	<!-- 配置文件解析的参数 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="17367648787" />
+	</bean>
+	
+	<!-- 配置拦截器  -->
+	<!--<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/download/*"/>
+			<mvc:exclude-mapping path="/css/*"/>
+			<mvc:exclude-mapping path="/js/*"/>
+			<mvc:exclude-mapping path="/imags/*"/>
+			<bean class="com.hwua.intercepter.TestIntercepter"/>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/user/*"/>
+			<mvc:exclude-mapping path="/user/login"/>
+			<bean class="com.hwua.intercepter.LoginIntercepter"/>
+		</mvc:interceptor>
+	
+	</mvc:interceptors>-->
+</beans>
+
+
+
+
+        

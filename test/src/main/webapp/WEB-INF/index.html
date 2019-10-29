@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery/jquery-3.4.1.min.js"></script>
+    <script src="../static/layer/layer.js"></script>
+    <script src="../static/layui/layui.js"></script>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <script src="../js/jsrsasign-rsa-min.js"></script>
+    <script src="../js/jsrsasign-all-min.js"></script>
+   <!-- <script src="../js/jsrsasign-jwths-min.js"></script>-->
+
+    <script type="text/javascript">
+
+
+
+    </script>
+
+    <style type="text/css">
+        .isshow {
+            display: none;
+        }
+
+        .divshow {
+            margin-top: 30px;
+            padding-left: 40px;
+        }
+    </style>
+
+
+</head>
+<body class="layui-bg-green">
+
+<div>
+
+    <div>
+        <input type="button" onclick="getSign('sfewfe')" value="私钥签名">
+    </div>
+
+    <div class="divshow">
+        <button type="button" class="layui-bg-orange" id="up" lay-data="{url: '/uploadFile/', accept: 'file'}">
+            <i class="layui-icon layui-bg-orange">&#xe67c;</i>上传文件
+        </button>
+    </div>
+
+    <div class="divshow">
+        <a id="dl" href="" class="layui-bg-red" style="font-size: 18px"> 文件下载</a>
+    </div>
+
+    <div class="divshow">
+        <button class="layui-bg-red" id="buttonshow"
+                type="button" value="文件信息展示" onclick="showMessage()">文件信息展示
+        </button>
+    </div>
+
+    <table class="layui-table isshow" id="tableid">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>文件名(uuid)</th>
+            <th>文件大小</th>
+            <th>文件类型</th>
+            <th>原文件名字</th>
+            <th>创建时间</th>
+            <th>文件目录</th>
+        </tr>
+        </thead>
+        <tbody style="height:300px">
+        <tr id="trid">
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="divshow">
+        <input id="tenRecord" type="button" class="layui-bg-red layui-icon" value="展示最近上传十条记录">
+    </div>
+    <div id="tenRecordShow">
+    </div>
+
+
+</div>
+<script type="text/javascript">
+
+    let SID = getRandomString();
+    let signature = getSign(SID);
+    let uuid = "";
+    let fileDes = {
+        f_id: "",
+        f_size: 0,
+        f_type: "",
+        f_name: "",
+        f_createtime: "",
+        f_dir: ""
+    };
+
+    /* 获取加签名后的字符串
+ * str: [string、number、obj] 要加签的数据
+ * 返回值：加签名后的字符串
+ */
+    function getSign(str) {
+        // 私钥
+        let priK = "-----BEGIN PRIVATE KEY-----\n" +
+            "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAPddJ3PUyfNrMEQ3\n" +
+            "ko59PHQjJUlnnBvnuKysK4cOGdhfC2Z2FBqWAgjR+jN54WkykC+WeYcLWSlbtdUa\n" +
+            "9mcvHdtZsIRt/6kxJbiSZC4j7lzFFQlsKXux1o4MGsg2AREc8gJULXwAktOERUwf\n" +
+            "KO5HomfjNCbJg1tF5KS1j8GsVO8xAgMBAAECgYEA6eG1JMrj63jEmStmMb1txG1a\n" +
+            "mu4Q5z2QGgtr2HVXsIIlGEq6tWxyHf7TL4qkuz9onuYKn8n2Eqm44fZtVaBx+5ES\n" +
+            "zRpIvlTvaxmVu0HZ1hYAzUw1XyRnXNMKpL5tT4GCjm8+QGPzlGxgXI1sNg8r9Jaw\n" +
+            "9zRUYeA6LQR9RIMkHWUCQQD8QojjVoGjtiunoh/N8iplhUszZIavAEvmDIE+kVy+\n" +
+            "pA7hvlukLw6JMc7cfTcnHyxDo9iHVIzrWlTuKRq9KWVLAkEA+wgJS2sgtldnCVn6\n" +
+            "tJKFVwsHrWhMIU29msPPbNuWUD23BcKE/vehIyFu1ahNA/TiM40PEnzprQ5JfPxU\n" +
+            "16S78wJANTfMLTnYy7Lo7sqTLx2BuD0wqjzw9QZ4/KVytsJv8IAn65P/PVn4FRV+\n" +
+            "8KEx+3zmF7b/PT2nJRe/hycAzxtmlQJBAMrFwQxEqpXfoAEzx4lY2ZBn/nmaR/SW\n" +
+            "4VNEXCbocVC7qT1j1R5HVMgV13uKiTtq8dUGWmhqsi7x3XayNK5ECPUCQQDZaAN6\n" +
+            "tvIHApz9OLsXSw0jZirQ6KEYdharXbIVDy1W1sVE3lzLbqLdFp1bxAHQIvsYS5PM\n" +
+            "A9veSJh372RLJKkj\n" +
+            "-----END PRIVATE KEY-----";
+        // 创建 Signature 对象
+        let signature=new KJUR.crypto.Signature({alg:"SHA1withRSA",prvkeypem:priK});    //!这里指定 私钥 pem!
+        signature.updateString(str);
+        let a = signature.sign();
+        let sign = hextob64(a);
+        console.log(sign)
+
+        return sign;
+
+        //加签完成后需要转成base64才会与后端一致
+    };
+
+    //生成随机字符串
+    function getRandomString() {
+        let len =15;
+        let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+        let maxPos = $chars.length;
+        let pwd = '';
+        for (let i = 0; i < len; i++) {
+            pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        return pwd;
+    }
+
+
+
+    $("#tenRecord").click(function () {
+
+        layui.use('table', function () {
+            var table = layui.table;
+            //第一个实例
+            table.render({
+                elem: '#tenRecord'
+                , height: 312
+                , url: '/getTenRecord' //数据接口
+                , page: true //开启分页
+                , cols: [[ //表头
+                    {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'}
+                    , {field: 'f_id', title: '文件uuid', width: 80}
+                    , {field: 'f_size', title: '文件大小', width: 80, sort: true}
+                    , {field: 'f_type', title: '文件类型', width: 80}
+                    , {field: 'f_name', title: '文件名', width: 177}
+                    , {field: 'f_creattime', title: '创建时间', width: 80, sort: true}
+                    , {field: 'f_dir', title: '文件目录', width: 80, sort: true}
+                ]]
+            });
+        })
+    });
+
+    function showMessage() {
+        //$("#tableid").removeClass("isshow");
+        $("#tableid").addClass("isshow");
+        //$("#tableid").toggle();
+     //   let sign = getSign("ssss");
+        alert("show success");
+        console.log(SID);
+        $.ajax({
+                url: "/showMessage",
+                data: {},
+                type: "POST",
+                dataType: "json",
+                beforeSend: function (XMLHttpRequest) {
+                  XMLHttpRequest.setRequestHeader("SID", SID);
+                  XMLHttpRequest.setRequestHeader("signature", signature);
+                },
+                success: function (res) {
+                    alert("ssssssssss")
+                    console.log("fwhioefhwie")
+                    uuid = res.uuid
+                    fileDes.f_id = res.f_id
+                    fileDes.f_type = res.f_type
+                    fileDes.f_size = res.f_size
+                    fileDes.f_name = res.f_name
+                    fileDes.f_createtime = res.f_createtime
+                    fileDes.f_dir = res.f_dir
+                    alert("wehfwoiew")
+
+                    $("#tableid").removeClass("isshow");
+
+                    //  alert("移除 显示 class")
+                    let elementById = document.getElementById("trid");
+                    var htm = "<td>" + fileDes.f_id + "</td>" +
+                        "<td>" + fileDes.f_size + "</td>" +
+                        "<td>" + fileDes.f_type + "</td>" +
+                        "<td>" + fileDes.f_name + "</td>" +
+                        "<td>" + fileDes.f_createtime + "</td>" +
+                        "<td>" + fileDes.f_dir + "</td>";
+                    elementById.innerHTML = htm
+                },
+                error: function (res) {
+                    layer.msg("查询上一条记录失败")
+                }
+
+            }
+        )
+    }
+    // 动态修改 超链接的地址
+    /*  function downFile() {
+          window.location.href = '/downLoad?'+'uuid=' + fileDes.f_id;
+          //location.href='/downLoad?'+'uuid:'+uuid;
+          //$("#download2").attr("href","/downLoad?"+"uuid:"+uuid);
+      }*/
+    layui.use('upload', function () {
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#up' //绑定元素
+            , url: '/upload/' //上传接口
+            ,beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader("SID", SID);
+                    XMLHttpRequest.setRequestHeader("signature", signature);
+            }
+            , done: function (res) {
+                //alert("ssssssss")
+                console.log("dfdsf")
+                if (res.code == 0) {
+
+                    //layer.msg(res.msg)
+                    layer.msg(res.data.uuid)
+                    uuid = res.data.uuid
+                    fileDes.f_id = res.data.f_id
+                    fileDes.f_type = res.data.f_type
+                    fileDes.f_size = res.data.f_size
+                    fileDes.f_name = res.data.f_name
+                    fileDes.f_createtime = res.data.f_createtime
+                    fileDes.f_dir = res.data.f_dir
+                    console.log(fileDes)
+                    layer.msg("上传成功")
+                    $("#tableid").removeClass("isshow");
+                    //  alert("移除 显示 class")
+                    let elementById = document.getElementById("trid");
+                    var htm = "<td>" + fileDes.f_id + "</td>" +
+                        "<td>" + fileDes.f_size + "</td>" +
+                        "<td>" + fileDes.f_type + "</td>" +
+                        "<td>" + fileDes.f_name + "</td>" +
+                        "<td>" + fileDes.f_createtime + "</td>" +
+                        "<td>" + fileDes.f_dir + "</td>";
+                    elementById.innerHTML = htm
+
+                    /*文件下载动态改变文件名*/
+                    $("#dl").attr('href', 'http://127.0.0.1:9999/downLoad?uuid=' + fileDes.f_id);
+
+                }
+                //上传完毕回调
+            }
+            //上传失败回掉
+            , error: function () {
+                //请求异常回调
+                layer.msg("上传超时，上传失败");
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+"-----BEGIN PUBLIC KEY-----\n" +
+            "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMF4B4aDnV6j+yXiiXBYJjHM8sEgRicQ\n" +
+            "TsRndPKocf4PyNTcd9D1046wRMdtV5cijT3oVzBXQYupN+VXmMiM7MMCAwEAAQ==\n" +
+            "-----END PUBLIC KEY-----"
